@@ -24,7 +24,7 @@ public class EchoServer extends Thread {
     public EchoServer() {
         logger.info("Echo Server initialization...");
         try {
-            socket = new DatagramSocket(4447);
+            socket = new DatagramSocket(4445);
         } catch (SocketException e) {
             e.printStackTrace();
         }
