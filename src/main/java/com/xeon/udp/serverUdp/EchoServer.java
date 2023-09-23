@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -37,6 +38,7 @@ public class EchoServer extends Thread {
 
 
         while (running) {
+            logger.info("Have bean starting...");
             DatagramPacket packet
                     = new DatagramPacket(buf, buf.length);
             try {
@@ -45,13 +47,15 @@ public class EchoServer extends Thread {
                 e.printStackTrace();
             }
 
+            String encodedMsg = new String(packet.getData());
+            logger.info("Have received = " + encodedMsg);
             InetAddress address = packet.getAddress();
             int port = packet.getPort();
             packet = new DatagramPacket(buf, buf.length, address, port);
             String received
                     = new String(packet.getData(), 0, packet.getLength());
 
-            if (received.equals("end")) {
+            if (received.trim().equals("end")) {
                 running = false;
                 continue;
             }
@@ -62,5 +66,6 @@ public class EchoServer extends Thread {
             }
         }
         socket.close();
+        logger.info("socket has closed");
     }
 }
